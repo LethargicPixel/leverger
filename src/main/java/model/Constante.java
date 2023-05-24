@@ -11,14 +11,19 @@ public class Constante {
     
     public static ArrayList<ElementsVerger> arbres = new ArrayList<>();
     static {
-        arbres.add(new ElementsVerger(Face.COULEUR1,10));
-        arbres.add(new ElementsVerger(Face.COULEUR2,10));
-        arbres.add(new ElementsVerger(Face.COULEUR3,10));
-        arbres.add(new ElementsVerger(Face.COULEUR4,10));
+        arbres.add(new ElementsVerger(Face.COULEUR1,10,new Panier(Face.COULEUR1) ));
+        arbres.add(new ElementsVerger(Face.COULEUR2,10,new Panier(Face.COULEUR2) ));
+        arbres.add(new ElementsVerger(Face.COULEUR3,10,new Panier(Face.COULEUR3) ));
+        arbres.add(new ElementsVerger(Face.COULEUR4,10,new Panier(Face.COULEUR4) ));
     }
+    
+
+    
     
     public static Integer nbTour = 1;
     public static String LIGNE="--------------------------------";
+    
+    
     
     
     public static boolean verifFinPartie() {
@@ -38,15 +43,19 @@ public class Constante {
         }
     }
 	public static void partieSolo() {
+		
 		while (!verifFinPartie()){
+			
 			System.out.println(LIGNE);
 			etatVerger();
 			System.out.println(nbTour+"ieme tours");
 			arbres.get(lancerDeDe()).faitAction();
 			nbTour++;
 			System.out.println(LIGNE);
+	
 		}
 		System.out.println("Plus de fruits restant la partie est fini");
+
 	}
 	
 	

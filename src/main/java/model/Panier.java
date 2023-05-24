@@ -11,7 +11,7 @@ public class Panier {
 	
 	
 	public Panier(Face fruit) {
-		this.setFruit(fruit);
+		this.fruit=fruit;
 	}
 
 	public Boolean verifPlace() {
@@ -25,10 +25,10 @@ public class Panier {
 	
 	
 	public void remplir(Face objet) {
-			System.out.printf("vous avez ajouter une %s au panier , il reste %d place(s)\n", objet.toText(),place);
+			
 			contenu.add(objet);
 			place--;
-			
+			System.out.printf("vous avez ajouter une %s au panier , il reste %d place(s)\n", objet.toText(),place);
 			
 	}
 
