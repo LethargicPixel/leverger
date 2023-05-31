@@ -1,12 +1,12 @@
 package model;
 
 public class ElementsVerger {
-private Face specificite;
+private Fruits specificite;
 private Integer actionRestante;
 private Panier panier;
 
-public ElementsVerger(Face specificite, Integer actionTotal,Panier panier) {
-	super();
+public ElementsVerger(Fruits specificite, Integer actionTotal,Panier panier) {
+
 	this.specificite = specificite;
 	this.actionRestante = actionTotal;
 	this.panier=panier;
@@ -20,15 +20,16 @@ public void faitAction() {
 	if (Boolean.TRUE.equals(verifActionRestante())) {
 		actionRestante--;
 		panier.remplir(specificite);
-		System.out.printf("le fruit %s a ete retirer de larbre, %d fruit(s) restant\n",specificite.toText(),actionRestante);
+		
+		System.out.printf("le fruit %s a ete retirer de larbre, %d fruit(s) restant\n",specificite,actionRestante);
 	} else {
-		System.out.printf("le fruit %s n'a pas pu etre recuperer\n",specificite.toText());
+		System.out.printf("le fruit %s n'a pas pu etre recuperer\n",specificite);
 	}
 }
 
 @Override
 public String toString() {
-	return actionRestante +" "+ specificite.toText()+" restant";
+	return actionRestante +" "+ specificite+" restant";
 }
 
 
