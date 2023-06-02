@@ -2,8 +2,8 @@ package model;
 
 public class ElementsVerger {
 private Fruits specificite;
-private Integer actionRestante;
-private Panier panier;
+protected Integer actionRestante;
+public Panier panier;
 
 public ElementsVerger(Fruits specificite, Integer actionTotal,Panier panier) {
 
@@ -17,11 +17,11 @@ public Integer getActionRestante() {
 }
 
 public Boolean verifActionRestante() {
-	return actionRestante!=0;
+	return actionRestante<=0;
 }
 
 public void faitAction() {
-	if (Boolean.TRUE.equals(verifActionRestante())) {
+	if (!verifActionRestante()) {
 		actionRestante--;
 		panier.remplir(specificite);
 		

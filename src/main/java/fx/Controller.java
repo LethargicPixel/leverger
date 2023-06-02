@@ -15,10 +15,8 @@ import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
@@ -34,8 +32,10 @@ public class Controller {
     private VBox vBoxGauche;
 
     @FXML
+    private GridPane gridCorbeau;
+    
+    @FXML
     private VBox vboxDroite;
-
 
     @FXML
     private StackPane arbre1;
@@ -58,6 +58,8 @@ public class Controller {
     @FXML
     private Label labelTour;
     
+    ArrayList<ImageView> puzzle = new ArrayList<>();
+    
     int nbColonne = (int) Math.round(Math.sqrt(Constante.NB_FRUITS));
     
     static ArrayList<Label> labelsPanier = new ArrayList<>();
@@ -68,10 +70,12 @@ public class Controller {
     
     @FXML
     void lancerJeu(MouseEvent event) {
-    	 int lancerDe=Constante.lancerDeDe();
+    	int lancerDe=Constante.lancerDeDe();
+
+    	int restant=Constante.arbres.get(lancerDe).getActionRestante()-1;
     	
-    	if (!Constante.tour(lancerDe,tour)) {
-    		int restant=Constante.NB_FRUITS-Constante.arbres.get(lancerDe).getActionRestante()-1;
+    	if (Constante.tour(lancerDe,tour)) {
+    		
     		
     		imgDe.setVisible(true);
 	    	imgDe.setImage(new Image(Constante.de.get(lancerDe).couleur()));
@@ -80,18 +84,34 @@ public class Controller {
 	    	labelTour.setVisible(true);
 	    	labelTour.setText("Tour n°"+tour);
 
-	    	if (restant<10) {
+	    	if (restant>=0 && lancerDe!=4) {
 	    		recupereElement(restant/nbColonne,restant%nbColonne,lancerDe).setVisible(false);
-	    		labelsPanier.get(lancerDe).setText(restant+1+"/10");
+	    		labelsPanier.get(lancerDe).setText(Constante.NB_FRUITS-restant+"/10");
 	    	}
+	    	
+	    	if (lancerDe==4) {
 
+	    		System.out.println(Constante.verifFinPartieCorbeau());
+	    		puzzle.get(8-Constante.arbres.get(4).getActionRestante()).setVisible(true);
+	    	
+	    	}
 	    	
 	    	tour++;
 	    	}else {
-	    		labelTour.setText("Tous les fruits ont été retirés,\n la partie est finie au tour n°"+tour+".");
+    	
+    	if (Constante.verifFinPartieFruit()) {
+    			recupereElement(restant/nbColonne,restant%nbColonne,lancerDe).setVisible(false);
+	    		labelTour.setText("Tous les fruits ont été retirés,\n la partie est gagné au tour n°"+tour+".");
 	    		btnDe.setVisible(false);
 	    		imgDe.setVisible(false);
-	    	}
+	    	}else {
+    	
+    	if (Constante.verifFinPartieCorbeau()) {
+    		puzzle.get(8).setVisible(true);
+    		labelTour.setText("Le corbeau est apparu,\nla partie est perdue au tour n°"+tour+".");
+    		btnDe.setVisible(false);
+    		imgDe.setVisible(false);
+    	}}}
     }
     
     
@@ -109,8 +129,18 @@ public class Controller {
         arbres.add(arbre2);
         arbres.add(arbre3);
         arbres.add(arbre4);
-
-
+        
+        gridCorbeau.setVgap(40);
+        gridCorbeau.setHgap(31);
+        
+        for (int x = 0; x < 9; x++) {
+        	ImageView piece = new ImageView( new Image(getClass().getClassLoader().getResourceAsStream(x%3+""+x/3+".png")));
+        	piece.setPreserveRatio(true);
+        	piece.setFitWidth(100);
+        	piece.setVisible(false);
+        	gridCorbeau.add(piece,x%3,x/3);
+        	puzzle.add(piece);
+        }
 
         for (int j = 0; j < 4; j++) {
 
@@ -172,7 +202,7 @@ public class Controller {
     }
     public static Node recupereElement(Integer ligne, Integer colonne, int index) {
         for (Node fruit : Controller.listeFruits.get(index).getChildren()) {
-            if(GridPane.getRowIndex(fruit).equals(ligne) && GridPane.getColumnIndex(fruit).equals(colonne)) {
+            if(GridPane.getRowIndex(fruit)==(ligne) && GridPane.getColumnIndex(fruit)==(colonne)) {
                 return fruit;
             }
         }

@@ -5,7 +5,8 @@ public enum Fruits {
 CERISE("rouge.png"),
 PRUNES("violet.png"),
 POIRES("jaune.png"),
-POMMES("vert.png");
+POMMES("vert.png"),
+CORBEAU("noire.png");
 
 
 

@@ -1,10 +1,11 @@
 package fx;
 import java.util.ArrayList;
 
-import javafx.scene.image.Image;
+import model.Corbeau;
 import model.ElementsVerger;
 import model.Fruits;
 import model.Panier;
+import model.PuzzleCorbeau;
 
 public class Constante {
 	
@@ -27,6 +28,7 @@ public class Constante {
         arbres.add(new ElementsVerger(Fruits.PRUNES,NB_FRUITS,new Panier(Fruits.PRUNES) ));
         arbres.add(new ElementsVerger(Fruits.POIRES,NB_FRUITS,new Panier(Fruits.POIRES) ));
         arbres.add(new ElementsVerger(Fruits.POMMES,NB_FRUITS,new Panier(Fruits.POMMES) ));
+        arbres.add(new Corbeau(9, new PuzzleCorbeau()));
     }
 
 
@@ -38,15 +40,20 @@ public class Constante {
     
     
     
-    public static boolean verifFinPartie() {
+    public static Boolean verifFinPartieFruit() {
         Integer compte=0;
-    	for (ElementsVerger arbre : arbres) {
-            if (Boolean.FALSE.equals(arbre.verifActionRestante())) {
+    	for (int i=0;i<4;i++) {
+            if (arbres.get(i).verifActionRestante()) {
                 compte++;
             }
         }
+
         return compte==4;
         
+    }
+    
+    public static Boolean verifFinPartieCorbeau() {
+    	return arbres.get(4).verifActionRestante();
     }
     
     public static void etatVerger() {
@@ -54,21 +61,29 @@ public class Constante {
     		System.out.println(arbre.toString());
         }
     }
-	public static boolean tour(int numero,int nbTour) {
-		
-		if (verifFinPartie()){
-			
-			System.out.println("Plus de fruits restant la partie est fini");
-			return true;
-		}
+	public static Boolean tour(int numero,int nbTour) {
 		
 		System.out.println(LIGNE);
+		arbres.get(numero).faitAction();
 		etatVerger();
 		System.out.println(nbTour+"ieme tours");
-		arbres.get(numero).faitAction();
 
 		System.out.println(LIGNE);
-		return false;
+		
+		if (verifFinPartieFruit()){
+			
+			System.out.println("Plus de fruits restant la partie est gagné");
+			return false;
+		}
+		
+		if (verifFinPartieCorbeau()){
+			
+			System.out.println("le puzzle du corbeau a ete completer, la partie est perdu");
+
+			return false;
+		}
+
+		return true;
 
 		
 
@@ -77,7 +92,7 @@ public class Constante {
 	
 	public static int lancerDeDe() {
 		
-		return (int)(Math.random()*4);
+		return (int) (Math.random()*arbres.size());
 	}
 }
 

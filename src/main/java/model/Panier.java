@@ -7,17 +7,18 @@ import fx.Constante;
 public class Panier {
 	
 	
-	private Integer place=Constante.NB_FRUITS;
+	private Integer place;
 	private ArrayList<Fruits> contenu = new ArrayList<>();
 	private Fruits fruit;
 	
 	
 	public Panier(Fruits fruit) {
 		this.fruit=fruit;
+		this.place=Constante.NB_FRUITS;
 	}
 
 	public Boolean verifPlace() {
-		return place!=0;
+		return place==0;
 	}
 	
 	public void montreContenu() {
@@ -30,8 +31,7 @@ public class Panier {
 			
 			contenu.add(objet);
 			place--;
-			System.out.printf("vous avez ajouter une %s au panier , il reste %d place(s)\n", objet,place);
-			
+			System.out.printf("vous avez ajouter une %s au panier , il reste %d place(s)\n", objet,place);	
 	}
 
 	public Fruits getFruit() {
