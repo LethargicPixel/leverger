@@ -2,7 +2,6 @@ package fx;
 
 import java.util.ArrayList;
 
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -19,6 +18,9 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 
 public class Controller {
 
@@ -58,12 +60,7 @@ public class Controller {
     
     int nbColonne = (int) Math.round(Math.sqrt(Constante.NB_FRUITS));
     
-    static ArrayList<Integer> fruitRestant=new ArrayList<>();
-    static {
-    	for (int i=0;i<4;i++ ) {
-    		fruitRestant.add(0);
-    	}
-    }
+    static ArrayList<Label> labelsPanier = new ArrayList<>();
     
     static ArrayList<GridPane> listeFruits=new ArrayList<>();
 
@@ -74,16 +71,19 @@ public class Controller {
     	 int lancerDe=Constante.lancerDeDe();
     	
     	if (!Constante.tour(lancerDe,tour)) {
-    		int restant=fruitRestant.get(lancerDe);
+    		int restant=Constante.NB_FRUITS-Constante.arbres.get(lancerDe).getActionRestante()-1;
     		
     		imgDe.setVisible(true);
 	    	imgDe.setImage(new Image(Constante.de.get(lancerDe).couleur()));
-	    	fruitRestant.set(lancerDe,restant+1);
+
 	    	
 	    	labelTour.setVisible(true);
 	    	labelTour.setText("Tour n°"+tour);
 
-	    	recupereElement(restant/nbColonne,restant%nbColonne,lancerDe).setVisible(false);
+	    	if (restant<10) {
+	    		recupereElement(restant/nbColonne,restant%nbColonne,lancerDe).setVisible(false);
+	    		labelsPanier.get(lancerDe).setText(restant+1+"/10");
+	    	}
 
 	    	
 	    	tour++;
@@ -93,6 +93,9 @@ public class Controller {
 	    		imgDe.setVisible(false);
 	    	}
     }
+    
+    
+    
     
     
     
@@ -112,17 +115,37 @@ public class Controller {
         for (int j = 0; j < 4; j++) {
 
             ImageView imgArbre = new ImageView(new Image(getClass().getClassLoader().getResourceAsStream("arbre.png")));
+            ImageView imgPanier = new ImageView(new Image(getClass().getClassLoader().getResourceAsStream("panier.png")));
+            
+            Label labelPanier=new Label("0/10");
+            
+
+            labelPanier.setFont(Font.font("Arial", FontWeight.BOLD, 20));
+            
+            labelsPanier.add(labelPanier);
+            
             arbres.get(j).getChildren().add(imgArbre);
+            arbres.get(j).getChildren().add(imgPanier);
+            arbres.get(j).getChildren().add(labelPanier);
+            
             imgArbre.setPreserveRatio(true);
             imgArbre.setFitWidth(800);
-            if (j % 2 == 1) {
-                VBox.setVgrow(arbres.get(j), Priority.ALWAYS);
-            }
+            
+            imgPanier.setTranslateY(-90);
+            imgPanier.setPreserveRatio(true);
+            imgPanier.setFitWidth(200);
+            
+            labelPanier.setTranslateY(-120);
+            labelPanier.setTranslateX(-80);
+            
+
 
             GridPane emplacementFruit = new GridPane();
 
             StackPane.setAlignment(emplacementFruit, Pos.CENTER);
             StackPane.setAlignment(imgArbre, Pos.CENTER);
+            StackPane.setAlignment(imgPanier, Pos.BOTTOM_RIGHT);
+            StackPane.setAlignment(labelPanier, Pos.BOTTOM_RIGHT);  
             
             emplacementFruit.setMinWidth(0);
             emplacementFruit.setMaxWidth(200);

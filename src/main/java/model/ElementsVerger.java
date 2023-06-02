@@ -12,6 +12,10 @@ public ElementsVerger(Fruits specificite, Integer actionTotal,Panier panier) {
 	this.panier=panier;
 }
 
+public Integer getActionRestante() {
+	return actionRestante;
+}
+
 public Boolean verifActionRestante() {
 	return actionRestante!=0;
 }
