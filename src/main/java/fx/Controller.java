@@ -91,7 +91,6 @@ public class Controller {
 	    	
 	    	if (lancerDe==4) {
 
-	    		System.out.println(Constante.verifFinPartieCorbeau());
 	    		puzzle.get(8-Constante.arbres.get(4).getActionRestante()).setVisible(true);
 	    	
 	    	}
